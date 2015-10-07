@@ -1,6 +1,7 @@
 require "gosu"
 
 require_relative "player"
+require_relative "z_order"
 
 class GameWindow < Gosu::Window
 
@@ -13,7 +14,7 @@ class GameWindow < Gosu::Window
 
 		@player = Player.new
 		@player.warp(width/2, height/2)
-		
+
 	end
 
 	def update
@@ -25,7 +26,7 @@ class GameWindow < Gosu::Window
 	end
 
 	def draw
-		@background_image.draw(0, 0, 0) 
+		@background_image.draw(0, 0, ZOrder::BACKGROUND) 
 		@player.draw
 	end
 
