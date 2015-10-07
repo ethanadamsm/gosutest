@@ -1,6 +1,7 @@
 require "gosu"
 
 require_relative "player"
+require_relative "star"
 require_relative "z_order"
 
 class GameWindow < Gosu::Window
@@ -15,6 +16,8 @@ class GameWindow < Gosu::Window
 		@player = Player.new
 		@player.warp(width/2, height/2)
 
+		@star_anim = Gosu::Image::load_tiles("media/star.png", 25, 25)
+		@stars = []
 	end
 
 	def update
@@ -23,11 +26,17 @@ class GameWindow < Gosu::Window
 		@player.accelerate if Gosu::button_down? Gosu::KbUp
 
 		@player.move
+		@player.collect_stars(@stars)
+
+		if rand(100) < 4 && @stars.size < 25
+			@stars.push(Star.new(@star_anim))
+		end
 	end
 
 	def draw
 		@background_image.draw(0, 0, ZOrder::BACKGROUND) 
 		@player.draw
+		@stars.each {|star| star.draw}
 	end
 
 	def button_down(id)
